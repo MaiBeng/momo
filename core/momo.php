@@ -6,8 +6,8 @@ class momo
 	public static $classmap = array();
 	public static function run()
 	{
-		p('ok');
 		$route = new \core\lib\route();
+		p($route);
 	}
 
 	public static function load($class)
@@ -16,11 +16,11 @@ class momo
 		// new \core\route();
 		// $class = "\core\route";
 		// MOMO . '/core/route.php';
-		str_replace('\\', '/', $class);
 
 		if (isset($classmap[$class])) {
 			return true;
 		}else{
+			str_replace('\\', '/', $class);
 			$file = MOMO . '/' . $class . '.php';
 			if (is_file($file)) {
 				require_once $file;
