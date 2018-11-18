@@ -4,10 +4,23 @@ namespace core;
 class momo
 {
 	public static $classmap = array();
+	public $assign;
 	public static function run()
 	{
+		\core\lib\log::init();
 		$route = new \core\lib\route();
-		p($route);
+		$ctrlClass = $route->ctrl;
+		$action = $route->action;
+		$ctrlfile = APP.'/ctrl/'.$ctrlClass.'Ctrl.php';
+		$clctrlClass = '\\'.MODULE.'\ctrl\\'.$ctrlClass.'Ctrl';
+		if (is_file($ctrlfile)) {
+			include $ctrlfile;
+			$ctrl = new $clctrlClass();
+			$ctrl->$action();
+			\core\lib\log::log('ctrl:'.$ctrlClass.'  action:'.$action);
+		}else{
+			throw new \Exception("找不到控制器".$ctrlClass);
+		}
 	}
 
 	public static function load($class)
@@ -28,6 +41,20 @@ class momo
 			}else{
 				return false;
 			}
+		}
+	}
+
+	public function assign($name, $value)
+	{
+		$this->assign[$name] = $value;
+	}
+
+	public function display($file)
+	{
+		$file = APP.'/views/'.$file;
+		if (is_file($file)) {
+			extract($this->assign);	//将数组键名作为变量名，键值作为变量值输出
+			include $file;
 		}
 	}
 }

@@ -15,6 +15,9 @@ define('CORE', MOMO . '/core');
 // 定义框架控制器文件目录
 define('APP', MOMO . '/app');
 
+// 定义模块
+define('MODULE', 'app');
+
 // 是否开启调试模式
 define('DEBUG', true);
 
